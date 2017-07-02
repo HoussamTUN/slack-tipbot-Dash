@@ -3,7 +3,7 @@ let mongoose = require('mongoose')
 let debug = require('debug')('tipbot:test')
 
 let texts = require('../text/txt_nexus.js').tipbotTxt
-let _ = require('loNexus')
+let _ = require('lodash')
 
 const DB = 'mongodb://localhost/tipdb-dev'
 let reply = {}
