@@ -2,20 +2,20 @@
 
 let debug = require('debug')('tipbot:user')
 
-let dashd = require('bitcoin')
+let Nexusd = require('bitcoin')
 
-let helpText = require('../text/txt_dash.js').userTxt
+let helpText = require('../text/txt_nexus.js').userTxt
 let Coin = require('./coin')
 
-const BLOCKCHAIN_EXPLORER_URL = 'https://chainz.cryptoid.info/dash/tx.dws?'
+const BLOCKCHAIN_EXPLORER_URL = 'https://nxsorbitalscan.com/tx/'
 
-const REQUIRED_WITHDRAW_CONFIRMATIONS = 6
-const REQUIRED_TIP_CONFIRMATIONS = 5 // to immediately be able to send a tip after deposit with InstantSend
+const REQUIRED_WITHDRAW_CONFIRMATIONS = 3
+const REQUIRED_TIP_CONFIRMATIONS = 3 // to immediately be able to send a tip after deposit with InstantSend
 
 module.exports = class Wallet {
   constructor(RPC_PORT, RPC_USER, RPC_PASSWORD, HighBalanceWarningMark, TX_FEE) {
     // create connection via RPC to wallet
-    this.walletDaemon = new dashd.Client({
+    this.walletDaemon = new Nexusd.Client({
       host: 'localhost',
       port: RPC_PORT,
       user: RPC_USER,
@@ -195,7 +195,7 @@ module.exports = class Wallet {
                   return reject(error)
                 }
                 if (result === true) {
-                  debug('Sending Tip: Moved ' + Coin.toLarge(value) + ' Dash from ' + user.handle + ' to ' + sendToUser.name + '(' + sendToUser.id + ')')
+                  debug('Sending Tip: Moved ' + Coin.toLarge(value) + ' Nexus from ' + user.handle + ' to ' + sendToUser.name + '(' + sendToUser.id + ')')
                   // prepare message in channel where Tip command was issued
                   let responses = {
                     public: helpText.SendPublicMessage1 + user.handle + helpText.SendPublicMessage2 + sendToUser.handle

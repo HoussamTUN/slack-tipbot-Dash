@@ -12,15 +12,15 @@ const fs = require('fs')
 const User = require('./user.js')
 const Wallet = require('./wallet.js')
 const Coin = require('./coin.js')
-const tipbotTxt = require('../text/txt_dash.js').tipbotTxt
+const tipbotTxt = require('../text/txt_nexus.js').tipbotTxt
 
 
 let TipBot = function (bot, RPC_USER, RPC_PASSWORD, RPC_PORT, OPTIONS) {
   let self = this
   if (!bot) { throw new Error('Connection with Slack not availible for tipbot') }
 
-  const HighBalanceWarningMark = Coin.toSmall(1.0)
-  self.CYBERCURRENCY = 'DASH'  // upper case for compare
+  const HighBalanceWarningMark = Coin.toSmall(50.0)
+  self.CYBERCURRENCY = 'NXS'  // upper case for compare
   const BLACKLIST_CURRENCIES = [self.CYBERCURRENCY]
 
   self.initializing = false
@@ -37,7 +37,7 @@ let TipBot = function (bot, RPC_USER, RPC_PASSWORD, RPC_PORT, OPTIONS) {
     OTHER_BALANCES: false,  // default admins cannot see a balance of an other specific user
     WARN_MODS_NEW_USER: false,
     WARN_MODS_USER_LEFT: false,
-    TX_FEE: Coin.toSmall(0.0001), // TX fee, used in withdrawing, in Duffs
+    TX_FEE: Coin.toSmall(0.01), // TX fee, used in withdrawing, in Duffs
     WALLET_PASSW: null,
 
     PRICE_UPDATE_EVERY: 30, // minuts
@@ -61,7 +61,7 @@ let TipBot = function (bot, RPC_USER, RPC_PASSWORD, RPC_PORT, OPTIONS) {
   self.AMOUNT_REGEX = new RegExp('\\s(\\d+\\.\\d{1,8}|\\.\\d{1,8}|\\d+)(?:\\s|$)')
   self.AMOUNT_OR_ALL_REGEX = new RegExp('\\s(\\d+\\.\\d{1,8}|\\.\\d{1,8}|\\d+|all)(?:\\s|$)')
 
-  self.ADDRESS_REGEX = new RegExp('[X|y][a-zA-Z0-9]{25,36}', 'g')
+  self.ADDRESS_REGEX = new RegExp('[2|y][a-zA-Z0-9]{25,50}', 'g')
 
   self.DUMMY_USERS_REGEX = new RegExp('.*[.]$', 'ig')
 
@@ -227,22 +227,35 @@ TipBot.prototype._getPriceRates = function (filename, cb) {
         if (err) {
           return cb(err)
         }
-
-        cb(null, JSON.parse(data))
+        let data_content
+        try {
+            data_content =JSON.parse(data)
+        }
+        catch(e) {
+            data_content = Object
+        }
+        cb(null, data_content)
       })
     } else {
-      request.get('http://coinmarketcap-nexuist.rhcloud.com/api/dash/price', function (err, response, body) {
+      request.get('http://coinmarketcap-nexuist.rhcloud.com/api/nxs/price', function (err, response, body) {
         fs.writeFile(filename, body, function (err) {
           if (err) {
             return cb(err)
           }
-
-          cb(null, JSON.parse(body))
+          let body_content
+          try {
+            body_content =JSON.parse(body)
+          }
+          catch(e) {
+            body_content = Object
+           }
+          cb(null, body_content)
         })
       })
     }
   })
 }
+
 
 // add a Slack user to the list of users (key = user.id)
 TipBot.prototype.addUser = function (user, updateRegex) {
@@ -469,7 +482,7 @@ TipBot.prototype.normalizeValue = function (inputValue, unit, user, outputCurren
           currency = self.CYBERCURRENCY
           value = parseFloat(inputValue)
         }
-        if (unit.match(/DASH/i)) {
+        if (unit.match(/nexus/i)) {
           currency = self.CYBERCURRENCY
           value = Coin.toSmall(inputValue)
         }
@@ -525,7 +538,7 @@ TipBot.prototype.normalizeValue = function (inputValue, unit, user, outputCurren
                 '(' + showAmount + ' ' + self.CYBERCURRENCY +
                 ' at ' + rate + ' ' + currency + ' / ' + self.CYBERCURRENCY + ')'
 
-              // return converted value in dash, convertion rate, originalCurrency, originalValue, text about the convertion
+              // return converted value in nexus, convertion rate, originalCurrency, originalValue, text about the convertion
               const converted = { newValue, rate, text }
               return resolve(converted)
             }
@@ -634,7 +647,7 @@ TipBot.prototype.sendPrivateRainMessage = function (oneUser, rainSize) {
         .then(DMchannelRecievingUser => {
           const recievingUserMessage = {
             'channel': DMchannelRecievingUser,
-            'text': tipbotTxt.RainRecieved + Coin.toLarge(rainSize) + ' dash'
+            'text': tipbotTxt.RainRecieved + Coin.toLarge(rainSize) + ' nexus'
           }
           // wait the time set via rain Throttle to prevent slack spam protection
           setTimeout(() => {

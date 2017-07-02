@@ -1,11 +1,11 @@
 'use strict'
 // const debug = require('debug')('tipbot:autowithdraw')
-const autoWithdrawTxt = require('../text/txt_dash.js').autoWithdrawTxt
+const autoWithdrawTxt = require('../text/txt_nexus.js').autoWithdrawTxt
 const mongoose = require('mongoose')
 const AutowithdrawModel = mongoose.model('Autowithdraw')
 const Coin = require('./coin.js')
 
-const REQUIRED_WITHDRAW_CONFIRMATIONS = 6 //todo: read from wallet
+const REQUIRED_WITHDRAW_CONFIRMATIONS = 3 //todo: read from wallet
 
 function ShowSetup(user) {
   return new Promise(
@@ -27,7 +27,7 @@ function ShowSetup(user) {
           line += '\n\n'
           // amount
           line += autoWithdrawTxt.setup_1 +
-            (options.amount ? options.amount + ' dash'
+            (options.amount ? options.amount + ' nexus'
               : autoWithdrawTxt.notSet)
           // address
           line += '\n' + autoWithdrawTxt.setup_2 +

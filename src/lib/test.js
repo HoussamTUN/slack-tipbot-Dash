@@ -2,8 +2,8 @@
 let mongoose = require('mongoose')
 let debug = require('debug')('tipbot:test')
 
-let texts = require('../text/txt_dash.js').tipbotTxt
-let _ = require('lodash')
+let texts = require('../text/txt_nexus.js').tipbotTxt
+let _ = require('loNexus')
 
 const DB = 'mongodb://localhost/tipdb-dev'
 let reply = {}

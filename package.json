@@ -1,7 +1,7 @@
 {
   "name": "slack-tipbot-node",
   "version": "2.1.4",
-  "description": "Dash Slack TipBot - Using local wallet",
+  "description": "Nexus Slack TipBot - Using local wallet",
   "main": "bot.js",
   "dependencies": {
     "async": "^2.1.0",
@@ -36,18 +36,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/narubyriverlione/slack-tipbot"
+    "url": "https://github.com/HoussamTUN/slack-tipbot-Nexus"
   },
   "keywords": [
     "slack",
     "slackbot",
     "tipbot",
-    "dash"
+    "Nexus"
   ],
   "author": "Naruby Riverlione <naruby.riverlione@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NarubyRiverlione/slack-tipbot-Dash/issues"
+    "url": "https://github.com/HoussamTUN/slack-tipbot-Nexus/issues"
   },
   "snyk": true
 }
