@@ -87,7 +87,7 @@ eg; `@mr.robot 1 USD to EUR!_​  or; ​_@mr.robot 0.03 Nexus to GBP`
 ##### `balance all`      show all the tip jars (must be enabled in code)
 
 ##### `balance check`    show the balance of a specific user (must be enabled in code) 
-eg;        `dashbot balance check @user` 
+eg;        `mr.robot balance check @user` 
 
 
 ##### `whisper`         Send a message in a private channel to a user as dashbot.
